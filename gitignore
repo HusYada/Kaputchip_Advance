@@ -34,4 +34,3 @@
 # More Stuff to Ignore
 *.ini
 *.sqlite3
-/[Bb]uild/
