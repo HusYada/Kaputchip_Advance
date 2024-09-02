@@ -5,6 +5,7 @@
 // All Includes (dunno if i need all this)
 #include "bn_bg_palettes.h"
 #include "bn_blending.h"
+#include "bn_camera_actions.h"
 #include "bn_color.h"
 #include "bn_core.h"
 #include "bn_display.h"
