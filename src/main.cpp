@@ -26,8 +26,8 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
 	bn::regular_bg_ptr background_map = bn::regular_bg_items::test_map_3.create_bg(0,0);
 	
 	bn::sprite_ptr plyr_pixel = bn::sprite_items::cursor.create_sprite(0, 0);
-	bn::sprite_ptr plyr_next_tile = bn::sprite_items::cursor.create_sprite(0, 0);
-	plyr_next_tile.set_tiles(bn::sprite_items::cursor.tiles_item().create_tiles(2));
+	bn::sprite_ptr plyr_current_tile = bn::sprite_items::cursor.create_sprite(0, 0);
+	plyr_current_tile.set_tiles(bn::sprite_items::cursor.tiles_item().create_tiles(2));
 
 	const bn::regular_bg_map_item& map_item = bn::regular_bg_items::test_map_3.map_item();
 	bn::regular_bg_map_cell valid_map_cell = map_item.cell(0, 0);
@@ -35,6 +35,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
 
     bn::point plyr_map_position(255, 255);
     background_map.set_camera(camera);
+    plyr_current_tile.set_camera(camera);
 
     // ----------------------------------------------------
 	while(true)
@@ -67,13 +68,13 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
 
         bn::fixed plyr_sprite_x = (plyr_map_position.x() * 8) - (map_item.dimensions().width() * 4) + 4;
         bn::fixed plyr_sprite_y = (plyr_map_position.y() * 8) - (map_item.dimensions().height() * 4) + 4;
-        plyr_next_tile.set_position(plyr_sprite_x, plyr_sprite_y);
-        //plyr_next_tile.set_position(4, 4);
+        plyr_current_tile.set_position(plyr_sprite_x, plyr_sprite_y);
+        //plyr_current_tile.set_position(4, 4);
 
         if(plyr_tile_index == valid_tile_index)
         {
-        	camera.set_x(plyr_sprite_x + 4 + scrollx);
-        	camera.set_y(plyr_sprite_y + 4 + scrolly);
+        	camera.set_x(plyr_sprite_x + 4 + 0);
+        	camera.set_y(plyr_sprite_y + 4 + 0);
             plyr_map_position = new_plyr_map_position;
         }
 
