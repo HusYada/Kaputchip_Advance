@@ -32,8 +32,10 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
     plyr_rght_shadow.set_tiles(bn::sprite_items::cursor.tiles_item().create_tiles(2));
 
 	const bn::regular_bg_map_item& map_item = bn::regular_bg_items::test_map_3.map_item();
-	bn::regular_bg_map_cell valid_map_cell = map_item.cell(0, 0);
-	int valid_tile_index = bn::regular_bg_map_cell_info(valid_map_cell).tile_index();
+    bn::regular_bg_map_cell valid_map_cells[3] = {
+    map_item.cell(0, 0), map_item.cell(0, 1), map_item.cell(0, 2)
+    };
+    int valid_map_cells_length = sizeof(valid_map_cells)/sizeof(bn::regular_bg_map_cell);
 
     bn::point leftshadowpos(255, 255);
     bn::point rghtshadowpos(256, 255);
@@ -82,12 +84,27 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
         plyr_left_shadow.set_position(plyr_sprite_x, plyr_sprite_y);
         plyr_rght_shadow.set_position(plyr_sprite_x + 8, plyr_sprite_y);
 
-        if(plyr_tile_index1 == valid_tile_index && plyr_tile_index2 == valid_tile_index)
+        // if(plyr_tile_index1 == valid_tile_index && plyr_tile_index2 == valid_tile_index)
+        // {
+        // 	camera.set_x(plyr_sprite_x + 4 + 0);
+        // 	camera.set_y(plyr_sprite_y + 4 - 24);
+        //     leftshadowpos = newleftshadowpos;
+        //     rghtshadowpos = newrghtshadowpos;
+        // }
+
+        for(int i = 0; i < valid_map_cells_length; i++)
         {
-        	camera.set_x(plyr_sprite_x + 4 + 0);
-        	camera.set_y(plyr_sprite_y + 4 - 24);
-            leftshadowpos = newleftshadowpos;
-            rghtshadowpos = newrghtshadowpos;
+            for(int j = 0; j < valid_map_cells_length; j++)
+            {
+                if(plyr_tile_index1 == bn::regular_bg_map_cell_info(valid_map_cells[i]).tile_index()
+                && plyr_tile_index2 == bn::regular_bg_map_cell_info(valid_map_cells[j]).tile_index())
+                {
+                    camera.set_x(plyr_sprite_x + 4 + 0);
+                    camera.set_y(plyr_sprite_y + 4 - 24);
+                    leftshadowpos = newleftshadowpos;
+                    rghtshadowpos = newrghtshadowpos;
+                }
+            }
         }
 
         // ----------------------------------------------------
@@ -96,7 +113,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
 		if(bn::keypad::select_pressed()) { 
 		    BN_LOG("===============");
 		    BN_LOG("Back X: ",  scrollx);
-		    BN_LOG("Back Y: ",  scrolly);
+		    BN_LOG("Back Y: ",  sizeof(bn::regular_bg_map_cell));
 		    BN_LOG("plyr_sprite_x: ",  plyr_sprite_x);
 		    BN_LOG("plyr_sprite_y: ",  plyr_sprite_y);
 		}
