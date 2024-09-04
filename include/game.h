@@ -46,7 +46,7 @@
 // Variables
 bn::string<64> testing_text;
 int scene = 0;
-int px, py, bgx, bgy, bgspd, dx, dy;
+int px, py, speed = 1, bgx, bgy, bgspd, dx, dy;
 int scrollx = 0, scrolly = 0, shrlx = 0, shrly = 0; // SHadow ScRoLl
 
 #endif
