@@ -25,7 +25,9 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
     // ----------------------------------------------------
 	bn::regular_bg_ptr background_map = bn::regular_bg_items::test_map_3.create_bg(0,0);
 	
-	bn::sprite_ptr plyr_pixel = bn::sprite_items::cursor.create_sprite(0, 0);
+    bn::sprite_ptr plyr_tile_bound = bn::sprite_items::cursor.create_sprite(0, 0);
+    plyr_tile_bound.set_tiles(bn::sprite_items::cursor.tiles_item().create_tiles(1));
+    bn::sprite_ptr plyr_pixel = bn::sprite_items::cursor.create_sprite(0, 0);
 	bn::sprite_ptr plyr_left_shadow = bn::sprite_items::cursor.create_sprite(0, 0);
     bn::sprite_ptr plyr_rght_shadow = bn::sprite_items::cursor.create_sprite(0, 0);
 	plyr_left_shadow.set_tiles(bn::sprite_items::cursor.tiles_item().create_tiles(2));
@@ -49,29 +51,49 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
     	bn::point newleftshadowpos = leftshadowpos;
         bn::point newrghtshadowpos = rghtshadowpos;
 
-        if(bn::keypad::left_pressed())
+        if(bn::keypad::left_held())
         {
-            newleftshadowpos.set_x(newleftshadowpos.x() - 1);
-            newrghtshadowpos.set_x(newrghtshadowpos.x() - 1);
+            bgx -= 1;
             scrollx -= 1;
+            if(scrollx < -4)
+            {
+                scrollx = 4;
+                newleftshadowpos.set_x(newleftshadowpos.x() - 1);
+                newrghtshadowpos.set_x(newrghtshadowpos.x() - 1);
+            }
         }
-        else if(bn::keypad::right_pressed())
+        else if(bn::keypad::right_held())
         {
-            newleftshadowpos.set_x(newleftshadowpos.x() + 1);
-            newrghtshadowpos.set_x(newrghtshadowpos.x() + 1);
+            bgx += 1;
             scrollx += 1;
+            if(scrollx > 4)
+            {
+                scrollx = -4;
+                newleftshadowpos.set_x(newleftshadowpos.x() + 1);
+                newrghtshadowpos.set_x(newrghtshadowpos.x() + 1);
+            }
         }
-        if(bn::keypad::up_pressed())
+        if(bn::keypad::up_held())
         {
-            newleftshadowpos.set_y(newleftshadowpos.y() - 1);
-            newrghtshadowpos.set_y(newrghtshadowpos.y() - 1);
+            bgy -= 1;
             scrolly -= 1;
+            if(scrolly < -4)
+            {
+                scrolly = 4;
+                newleftshadowpos.set_y(newleftshadowpos.y() - 1);
+                newrghtshadowpos.set_y(newrghtshadowpos.y() - 1);
+            }
         }
-        else if(bn::keypad::down_pressed())
+        else if(bn::keypad::down_held())
         {
-            newleftshadowpos.set_y(newleftshadowpos.y() + 1);
-            newrghtshadowpos.set_y(newrghtshadowpos.y() + 1);
+            bgy += 1;
             scrolly += 1;
+            if(scrolly > 4)
+            {
+                scrolly = -4;
+                newleftshadowpos.set_y(newleftshadowpos.y() + 1);
+                newrghtshadowpos.set_y(newrghtshadowpos.y() + 1);  
+            }
         }
 
         bn::regular_bg_map_cell plyr_map_cell1 = map_item.cell(newleftshadowpos);
@@ -83,6 +105,10 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
         bn::fixed plyr_sprite_y = (leftshadowpos.y() * 8) - (map_item.dimensions().height() * 4) + 4;
         plyr_left_shadow.set_position(plyr_sprite_x, plyr_sprite_y);
         plyr_rght_shadow.set_position(plyr_sprite_x + 8, plyr_sprite_y);
+
+        plyr_pixel.set_position(scrollx, scrolly);
+        camera.set_x(bgx);
+        camera.set_y(bgy - 24);
 
         // if(plyr_tile_index1 == valid_tile_index && plyr_tile_index2 == valid_tile_index)
         // {
@@ -99,8 +125,8 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
                 if(plyr_tile_index1 == bn::regular_bg_map_cell_info(valid_map_cells[i]).tile_index()
                 && plyr_tile_index2 == bn::regular_bg_map_cell_info(valid_map_cells[j]).tile_index())
                 {
-                    camera.set_x(plyr_sprite_x + 4 + 0);
-                    camera.set_y(plyr_sprite_y + 4 - 24);
+                    //camera.set_x(plyr_sprite_x + 4 + 0);
+                    //camera.set_y(plyr_sprite_y + 4 - 24);
                     leftshadowpos = newleftshadowpos;
                     rghtshadowpos = newrghtshadowpos;
                 }
