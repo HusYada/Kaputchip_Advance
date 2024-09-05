@@ -41,8 +41,20 @@
 #include "bn_regular_bg_items_test_map_3.h"
 // #include "bn_regular_bg_items_bg_loop.h"
 
-// Sprites
+// Sprites.h"
+#include "bn_sprite_items_bg_loop.h"
+#include "bn_sprite_items_big_heart.h"
+#include "bn_sprite_items_body.h"
+#include "bn_sprite_items_bullet.h"
 #include "bn_sprite_items_cursor.h"
+#include "bn_sprite_items_e_blu.h"
+#include "bn_sprite_items_e_bug.h"
+#include "bn_sprite_items_e_itm.h"
+#include "bn_sprite_items_e_jng.h"
+#include "bn_sprite_items_e_pnk.h"
+#include "bn_sprite_items_legs.h"
+#include "bn_sprite_items_rarm.h"
+#include "bn_sprite_items_small_heart.h"
 
 // Variables
 bn::string<64> testing_text;

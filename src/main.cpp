@@ -25,13 +25,20 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
     // ----------------------------------------------------
 	bn::regular_bg_ptr background_map = bn::regular_bg_items::test_map_3.create_bg(0,0);
 	
+    // Sprites
     bn::sprite_ptr plyr_tile_bound = bn::sprite_items::cursor.create_sprite(0, 0);
     plyr_tile_bound.set_tiles(bn::sprite_items::cursor.tiles_item().create_tiles(1));
 	bn::sprite_ptr plyr_left_shadow = bn::sprite_items::cursor.create_sprite(0, 0);
     bn::sprite_ptr plyr_rght_shadow = bn::sprite_items::cursor.create_sprite(0, 0);
 	plyr_left_shadow.set_tiles(bn::sprite_items::cursor.tiles_item().create_tiles(2));
     plyr_rght_shadow.set_tiles(bn::sprite_items::cursor.tiles_item().create_tiles(2));
-        bn::sprite_ptr plyr_pixel = bn::sprite_items::cursor.create_sprite(0, 0);
+    bn::sprite_ptr plyr_pixel = bn::sprite_items::cursor.create_sprite(0, 0);
+
+    // Player
+    bn::sprite_ptr plyr_r = bn::sprite_items::rarm.create_sprite(-16, 8);
+    bn::sprite_ptr plyr_l = bn::sprite_items::big_heart.create_sprite(16, 8);
+    bn::sprite_ptr plyr_d = bn::sprite_items::legs.create_sprite(0, 16);
+    bn::sprite_ptr plyr_b = bn::sprite_items::body.create_sprite(0, 0);
 
 	const bn::regular_bg_map_item& map_item = bn::regular_bg_items::test_map_3.map_item();
     bn::regular_bg_map_cell valid_map_cells[3] = {
