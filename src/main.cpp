@@ -23,7 +23,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
     // ----------------------------------------------------
     // Background Map Stuff
     // ----------------------------------------------------
-	bn::regular_bg_ptr background_map = bn::regular_bg_items::test_map_3.create_bg(0,0);
+	bn::regular_bg_ptr background_map = bn::regular_bg_items::test_map_2.create_bg(0,0);
 	
     // Sprites
     bn::sprite_ptr plyr_tile_bound = bn::sprite_items::cursor.create_sprite(0, 0);
@@ -41,7 +41,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
     bn::sprite_ptr plyr_d = bn::sprite_items::legs.create_sprite(0, 16);
     bn::sprite_ptr plyr_b = bn::sprite_items::body.create_sprite(0, 0);
 
-	const bn::regular_bg_map_item& map_item = bn::regular_bg_items::test_map_3.map_item();
+	const bn::regular_bg_map_item& map_item = bn::regular_bg_items::test_map_2.map_item();
     bn::regular_bg_map_cell valid_map_cells[3] = {
     map_item.cell(0, 0), map_item.cell(0, 1), map_item.cell(0, 2)
     };
@@ -77,6 +77,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
         //|| (bn::keypad::a_held() && newleftshadowpos.x() > enemtarget.x())) {
             scrollx -= speed;
             direction = 2;
+            leftorright = false;
 
             plyr_b.set_tiles(bn::sprite_items::body.tiles_item().create_tiles(2));
             walking = true;
@@ -100,6 +101,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
         //|| (bn::keypad::a_held() && newrghtshadowpos.x() < enemtarget.x())) {
             scrollx += speed;
             direction = 2;
+            leftorright = true;
 
             plyr_b.set_tiles(bn::sprite_items::body.tiles_item().create_tiles(2));
             walking = true;
@@ -168,9 +170,40 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
         }
 
         // Riichi
-        if(bn::keypad::r_pressed())
+        if(bn::keypad::r_pressed() && !r_attack) {
+            r_attack = true;
+            if(leftorright) atk_dirx = 1;
+            if(!leftorright) atk_dirx = -1;
+            if(direction == 0) atk_diry = -1;
+            if(direction == 2) atk_diry = 0;
+            if(direction == 4) atk_diry = 1;
+        }
+        if(r_attack)
         {
-            //
+            rarmx += atk_dirx * 4;
+            rarmy += atk_diry * 4;
+            plyr_r.set_horizontal_flip(leftorright);
+            plyr_r.set_tiles(bn::sprite_items::rarm.tiles_item().create_tiles(1));
+
+            if((atk_dirx == 1 && rarmx < -46) || (atk_dirx == -1 && rarmx > 26))
+            {
+                plyr_r.set_tiles(bn::sprite_items::rarm.tiles_item().create_tiles(2));
+                r_attack = false;
+            }
+        }
+        
+        if(!r_attack && rarmx != -16)
+        {
+            rarmx -= atk_dirx * 4;
+        }
+        if(!r_attack && rarmy != 8)
+        {
+            rarmy -= atk_diry * 4;
+        }
+
+        if(!r_attack && rarmx == -16)
+        {
+            plyr_r.set_tiles(bn::sprite_items::rarm.tiles_item().create_tiles(0));
         }
 
         if(walking)
@@ -187,7 +220,9 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
             }
         }
 
+        plyr_r.set_position(rarmx, rarmy);
 
+        // Main Tile Collision
         bn::regular_bg_map_cell plyr_map_cell1 = map_item.cell(newleftshadowpos);
         bn::regular_bg_map_cell plyr_map_cell2 = map_item.cell(newrghtshadowpos);
         int plyr_tile_index1 = bn::regular_bg_map_cell_info(plyr_map_cell1).tile_index();
@@ -201,14 +236,6 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
         plyr_pixel.set_position(scrollx, scrolly);
         camera.set_x(plyr_sprite_x + scrollx + 4);
         camera.set_y(plyr_sprite_y + scrolly - 28);
-
-        // if(plyr_tile_index1 == valid_tile_index && plyr_tile_index2 == valid_tile_index)
-        // {
-        // 	camera.set_x(plyr_sprite_x + 4 + 0);
-        // 	camera.set_y(plyr_sprite_y + 4 - 24);
-        //     leftshadowpos = newleftshadowpos;
-        //     rghtshadowpos = newrghtshadowpos;
-        // }
 
         for(int i = 0; i < valid_map_cells_length; i++)
         {
