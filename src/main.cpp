@@ -27,11 +27,11 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
 	
     bn::sprite_ptr plyr_tile_bound = bn::sprite_items::cursor.create_sprite(0, 0);
     plyr_tile_bound.set_tiles(bn::sprite_items::cursor.tiles_item().create_tiles(1));
-    bn::sprite_ptr plyr_pixel = bn::sprite_items::cursor.create_sprite(0, 0);
 	bn::sprite_ptr plyr_left_shadow = bn::sprite_items::cursor.create_sprite(0, 0);
     bn::sprite_ptr plyr_rght_shadow = bn::sprite_items::cursor.create_sprite(0, 0);
 	plyr_left_shadow.set_tiles(bn::sprite_items::cursor.tiles_item().create_tiles(2));
     plyr_rght_shadow.set_tiles(bn::sprite_items::cursor.tiles_item().create_tiles(2));
+        bn::sprite_ptr plyr_pixel = bn::sprite_items::cursor.create_sprite(0, 0);
 
 	const bn::regular_bg_map_item& map_item = bn::regular_bg_items::test_map_3.map_item();
     bn::regular_bg_map_cell valid_map_cells[3] = {
@@ -55,13 +55,20 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
 
         if(bn::keypad::a_held())
         {
-            //speedup
+            speed = 3;
+        }
+        if(bn::keypad::a_released())
+        {
+            speed = 1;
         }
 
-        if(bn::keypad::left_held()
-        || (bn::keypad::a_held() && newleftshadowpos.x() > enemtarget.x())) {
+        //-4, -5
+        // 4,  5
+
+        if(bn::keypad::left_held()){
+        //|| (bn::keypad::a_held() && newleftshadowpos.x() > enemtarget.x())) {
             scrollx -= speed;
-            if(scrollx < -4)
+            if(scrollx < -4 / speed)
             {
                 //scrollx = 0;
                 newleftshadowpos.set_x(newleftshadowpos.x() - 1);
@@ -74,10 +81,10 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
                 }
             }
         }
-        else if(bn::keypad::right_held()
-        || (bn::keypad::a_held() && newrghtshadowpos.x() < enemtarget.x())) {
+        else if(bn::keypad::right_held()){
+        //|| (bn::keypad::a_held() && newrghtshadowpos.x() < enemtarget.x())) {
             scrollx += speed;
-            if(scrollx > 4)
+            if(scrollx > 4 / speed)
             {
                 //scrollx = 0;
                 newleftshadowpos.set_x(newleftshadowpos.x() + 1);
@@ -90,10 +97,10 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
                 }
             }
         }
-        if(bn::keypad::up_held()
-        || (bn::keypad::a_held() && newrghtshadowpos.y() > enemtarget.y())) {
+        if(bn::keypad::up_held()){
+        //|| (bn::keypad::a_held() && newrghtshadowpos.y() > enemtarget.y())) {
             scrolly -= speed;
-            if(scrolly < -4)
+            if(scrolly < -4 / speed)
             {
                 //scrolly = 0;
                 newleftshadowpos.set_y(newleftshadowpos.y() - 1);
@@ -106,10 +113,10 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
                 }
             }
         }
-        else if(bn::keypad::down_held()
-        || (bn::keypad::a_held() && newrghtshadowpos.y() < enemtarget.y())) {
+        else if(bn::keypad::down_held()){
+        //|| (bn::keypad::a_held() && newrghtshadowpos.y() < enemtarget.y())) {
             scrolly += speed;
-            if(scrolly > 4)
+            if(scrolly > 4 / speed)
             {
                 //scrolly = 0;
                 newleftshadowpos.set_y(newleftshadowpos.y() + 1);
