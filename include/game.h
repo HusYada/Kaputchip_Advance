@@ -39,6 +39,7 @@
 // Backgrounds
 #include "bn_regular_bg_items_test_map_2.h"
 #include "bn_regular_bg_items_test_map_3.h"
+// #include "bn_regular_bg_items_bg_loop.h"
 
 // Sprites
 #include "bn_sprite_items_cursor.h"
