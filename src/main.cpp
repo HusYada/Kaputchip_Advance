@@ -35,6 +35,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
     bn::sprite_ptr plyr_pixel = bn::sprite_items::cursor.create_sprite(0, 0);
 
     // Player
+    bn::sprite_ptr plyr_s = bn::sprite_items::p_shadow.create_sprite(0, 24);
     bn::sprite_ptr plyr_r = bn::sprite_items::rarm.create_sprite(-16, 8);
     bn::sprite_ptr plyr_l = bn::sprite_items::big_heart.create_sprite(16, 8);
     bn::sprite_ptr plyr_d = bn::sprite_items::legs.create_sprite(0, 16);
@@ -62,7 +63,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
 
         if(bn::keypad::a_held())
         {
-            speed = 3;
+            speed = 2;
         }
         if(bn::keypad::a_released())
         {
@@ -75,6 +76,13 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
         if(bn::keypad::left_held()){
         //|| (bn::keypad::a_held() && newleftshadowpos.x() > enemtarget.x())) {
             scrollx -= speed;
+            direction = 2;
+
+            plyr_b.set_tiles(bn::sprite_items::body.tiles_item().create_tiles(2));
+            walking = true;
+            plyr_b.set_horizontal_flip(false);
+            plyr_d.set_horizontal_flip(false);
+
             if(scrollx < -4 / speed)
             {
                 //scrollx = 0;
@@ -91,6 +99,13 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
         else if(bn::keypad::right_held()){
         //|| (bn::keypad::a_held() && newrghtshadowpos.x() < enemtarget.x())) {
             scrollx += speed;
+            direction = 2;
+
+            plyr_b.set_tiles(bn::sprite_items::body.tiles_item().create_tiles(2));
+            walking = true;
+            plyr_b.set_horizontal_flip(true);
+            plyr_d.set_horizontal_flip(true);
+
             if(scrollx > 4 / speed)
             {
                 //scrollx = 0;
@@ -104,9 +119,17 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
                 }
             }
         }
+
         if(bn::keypad::up_held()){
         //|| (bn::keypad::a_held() && newrghtshadowpos.y() > enemtarget.y())) {
+
             scrolly -= speed;
+            direction = 4;
+            walking = true;
+
+            plyr_b.set_tiles(bn::sprite_items::body.tiles_item().create_tiles(4));
+            plyr_d.set_tiles(bn::sprite_items::legs.tiles_item().create_tiles(4));
+
             if(scrolly < -4 / speed)
             {
                 //scrolly = 0;
@@ -122,7 +145,14 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
         }
         else if(bn::keypad::down_held()){
         //|| (bn::keypad::a_held() && newrghtshadowpos.y() < enemtarget.y())) {
+
             scrolly += speed;
+            direction = 0;
+            walking = true;
+
+            plyr_b.set_tiles(bn::sprite_items::body.tiles_item().create_tiles(0));
+            plyr_d.set_tiles(bn::sprite_items::legs.tiles_item().create_tiles(0));
+
             if(scrolly > 4 / speed)
             {
                 //scrolly = 0;
@@ -137,6 +167,27 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
             }
         }
 
+        // Riichi
+        if(bn::keypad::r_pressed())
+        {
+            //
+        }
+
+        if(walking)
+        {
+            if(pa<2) { paa++;}
+            if(paa>10/speed) { pa++; paa=0;}
+            if(pa==1 && paa > 3){ pa=0;}
+            plyr_d.set_tiles(bn::sprite_items::legs.tiles_item().create_tiles(pa+direction));
+            if(bn::keypad::left_released() || bn::keypad::right_released()
+            || bn::keypad::up_released() || bn::keypad::down_released())
+            {
+                walking = false;
+                plyr_d.set_tiles(bn::sprite_items::legs.tiles_item().create_tiles(direction));
+            }
+        }
+
+
         bn::regular_bg_map_cell plyr_map_cell1 = map_item.cell(newleftshadowpos);
         bn::regular_bg_map_cell plyr_map_cell2 = map_item.cell(newrghtshadowpos);
         int plyr_tile_index1 = bn::regular_bg_map_cell_info(plyr_map_cell1).tile_index();
@@ -148,8 +199,8 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
         plyr_rght_shadow.set_position(plyr_sprite_x + 8, plyr_sprite_y);
 
         plyr_pixel.set_position(scrollx, scrolly);
-        camera.set_x(plyr_sprite_x + scrollx);
-        camera.set_y(plyr_sprite_y + scrolly);
+        camera.set_x(plyr_sprite_x + scrollx + 4);
+        camera.set_y(plyr_sprite_y + scrolly - 28);
 
         // if(plyr_tile_index1 == valid_tile_index && plyr_tile_index2 == valid_tile_index)
         // {

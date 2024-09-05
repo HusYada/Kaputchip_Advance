@@ -54,6 +54,7 @@
 #include "bn_sprite_items_e_pnk.h"
 #include "bn_sprite_items_legs.h"
 #include "bn_sprite_items_rarm.h"
+#include "bn_sprite_items_p_shadow.h"
 #include "bn_sprite_items_small_heart.h"
 
 // Variables
@@ -61,5 +62,10 @@ bn::string<64> testing_text;
 int scene = 0;
 int px, py, speed = 1, bgx, bgy, bgspd, dx, dy;
 int scrollx = 0, scrolly = 0, shrlx = 0, shrly = 0; // SHadow ScRoLl
+
+bool walking;
+int pa = 0; int paa = 0;
+
+int direction; // 0 is front, 2 is side, 4 is back
 
 #endif
