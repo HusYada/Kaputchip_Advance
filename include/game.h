@@ -63,13 +63,13 @@ int scene = 0;
 int px, py, speed = 1, bgx, bgy, bgspd, dx, dy;
 int scrollx = 0, scrolly = 0, shrlx = 0, shrly = 0; // SHadow ScRoLl
 
-bool walking, r_attack;
+bool walking, l_attack, l_return, r_attack, r_return;
 int pa = 0; int paa = 0;
 
 int direction; // 0 is front, 2 is side, 4 is back
 bool leftorright; // left is false, right is true;
-int atk_dirx, atk_diry;
+int atk_dirx = 0, atk_diry;
 
-int rarmx, rarmy;
+int larmx = 16, larmy = 8, rarmx = -16, rarmy = 8;
 
 #endif

@@ -81,6 +81,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
 
             plyr_b.set_tiles(bn::sprite_items::body.tiles_item().create_tiles(2));
             walking = true;
+            plyr_r.set_horizontal_flip(false);
             plyr_b.set_horizontal_flip(false);
             plyr_d.set_horizontal_flip(false);
 
@@ -105,6 +106,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
 
             plyr_b.set_tiles(bn::sprite_items::body.tiles_item().create_tiles(2));
             walking = true;
+            plyr_r.set_horizontal_flip(true);
             plyr_b.set_horizontal_flip(true);
             plyr_d.set_horizontal_flip(true);
 
@@ -170,40 +172,67 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
         }
 
         // Riichi
-        if(bn::keypad::r_pressed() && !r_attack) {
+        if(bn::keypad::r_pressed() && !r_attack && !r_return && (rarmx == -16 || rarmx == 32)) {
             r_attack = true;
             if(leftorright) atk_dirx = 1;
             if(!leftorright) atk_dirx = -1;
-            if(direction == 0) atk_diry = -1;
+            if(direction == 0) atk_diry = 1;
             if(direction == 2) atk_diry = 0;
-            if(direction == 4) atk_diry = 1;
+            if(direction == 4) atk_diry = -1;
+            plyr_r.set_tiles(bn::sprite_items::rarm.tiles_item().create_tiles(1));
         }
-        if(r_attack)
+
+        if(r_attack && !r_return)
         {
             rarmx += atk_dirx * 4;
             rarmy += atk_diry * 4;
             plyr_r.set_horizontal_flip(leftorright);
-            plyr_r.set_tiles(bn::sprite_items::rarm.tiles_item().create_tiles(1));
 
-            if((atk_dirx == 1 && rarmx < -46) || (atk_dirx == -1 && rarmx > 26))
+            if((atk_dirx == -1 && rarmx < -46) || (atk_dirx == 1 && rarmx > 62))
             {
                 plyr_r.set_tiles(bn::sprite_items::rarm.tiles_item().create_tiles(2));
                 r_attack = false;
+                r_return = true;
             }
         }
-        
-        if(!r_attack && rarmx != -16)
+
+        if(r_return && !r_attack)
         {
-            rarmx -= atk_dirx * 4;
+            if(atk_dirx == -1) rarmx -= atk_dirx * 8;
+            if(atk_dirx == 1)  rarmx -= atk_dirx * 8;
+            if(leftorright && rarmx < 32) rarmx += atk_dirx * 8;
+            if(rarmx <= 32 && rarmx >= -16) r_return = false;
         }
+
+        // if(!r_return && !r_attack)
+        // {
+        //     plyr_r.set_tiles(bn::sprite_items::rarm.tiles_item().create_tiles(0));
+        //     if(atk_dirx == 1) {
+        //     if(!leftorright && rarmx > -16) rarmx -= atk_dirx * 8;
+        //     if(leftorright && rarmx < 32) rarmx += atk_dirx * 8;
+        //     }
+        //     if(atk_dirx == -1) {
+        //     if(!leftorright && rarmx > -16) rarmx += atk_dirx * 8;
+        //     if(leftorright && rarmx < 32) rarmx -= atk_dirx * 8;
+        //     }
+        // }
+
+        if(!r_return && !r_attack)
+        {
+            plyr_r.set_tiles(bn::sprite_items::rarm.tiles_item().create_tiles(0));
+            if(!leftorright && rarmx > -16) rarmx -= 8;
+            if(leftorright && rarmx < 32) rarmx += 8;
+        }
+
         if(!r_attack && rarmy != 8)
         {
             rarmy -= atk_diry * 4;
         }
 
-        if(!r_attack && rarmx == -16)
+        if(!l_return && !l_attack)
         {
-            plyr_r.set_tiles(bn::sprite_items::rarm.tiles_item().create_tiles(0));
+            if(!leftorright && larmx < 16) larmx += 8;
+            if(leftorright && larmx > -28) larmx -= 8;
         }
 
         if(walking)
@@ -220,7 +249,8 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
             }
         }
 
-        plyr_r.set_position(rarmx, rarmy);
+        plyr_l.set_position(larmx + 8, larmy);
+        plyr_r.set_position(rarmx - 8, rarmy);
 
         // Main Tile Collision
         bn::regular_bg_map_cell plyr_map_cell1 = map_item.cell(newleftshadowpos);
@@ -256,11 +286,15 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
 		// Logging
 		// ----------------------------------------------------
 		if(bn::keypad::select_pressed()) { 
+            rarmx = -16;
+            rarmy = 0;
 		    BN_LOG("===============");
-		    BN_LOG("Back X: ",  scrollx);
-		    BN_LOG("Back Y: ",  sizeof(bn::regular_bg_map_cell));
-		    BN_LOG("plyr_sprite_x: ",  plyr_sprite_x);
-		    BN_LOG("plyr_sprite_y: ",  plyr_sprite_y);
+		    // BN_LOG("Back X: ",  scrollx);
+		    // BN_LOG("Back Y: ",  sizeof(bn::regular_bg_map_cell));
+		    // BN_LOG("plyr_sprite_x: ",  plyr_sprite_x);
+		    // BN_LOG("plyr_sprite_y: ",  plyr_sprite_y);
+            BN_LOG("RATKx: ",  rarmx);
+            BN_LOG("RATKy: ",  rarmy);
 		}
 		// ----------------------------------------------------
 		// Type Text
