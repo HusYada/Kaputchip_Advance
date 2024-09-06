@@ -2,9 +2,9 @@
 #include "game.h"
 
 void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator) {
-	// ----------------------------------------------------
+	// -------------------------------------------------------------------------------------------------------
 	// Text Stuff
-	// ----------------------------------------------------
+	// -------------------------------------------------------------------------------------------------------
 	text_generator.set_left_alignment();
     bn::vector<bn::sprite_ptr, 64> dialog;
     bool typetext = false;
@@ -20,12 +20,10 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
             "START: go to next scene ",
             "7 ",
         };
-    // ----------------------------------------------------
-    // Background Map Stuff
-    // ----------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------
+    // Sprites & Background Map Stuff
+    // -------------------------------------------------------------------------------------------------------
 	bn::regular_bg_ptr background_map = bn::regular_bg_items::test_map_2.create_bg(0,0);
-	
-    // Sprites
     bn::sprite_ptr plyr_tile_bound = bn::sprite_items::cursor.create_sprite(0, 0);
     plyr_tile_bound.set_tiles(bn::sprite_items::cursor.tiles_item().create_tiles(1));
 	bn::sprite_ptr plyr_left_shadow = bn::sprite_items::cursor.create_sprite(0, 0);
@@ -41,6 +39,9 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
     bn::sprite_ptr plyr_d = bn::sprite_items::legs.create_sprite(0, 16);
     bn::sprite_ptr plyr_b = bn::sprite_items::body.create_sprite(0, 0);
 
+    // Player
+    bn::sprite_ptr enm1 = bn::sprite_items::e_bug.create_sprite(0, 0);
+
 	const bn::regular_bg_map_item& map_item = bn::regular_bg_items::test_map_2.map_item();
     bn::regular_bg_map_cell valid_map_cells[3] = {
     map_item.cell(0, 0), map_item.cell(0, 1), map_item.cell(0, 2)
@@ -55,7 +56,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
 
     bn::point enemtarget(259, 255);
 
-    // ----------------------------------------------------
+    // -------------------------------------------------------------------------------------------------------
 	while(true)
     {
     	bn::point newleftshadowpos = leftshadowpos;
@@ -73,6 +74,9 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
         //-4, -5
         // 4,  5
 
+        // -------------------------------------------------------------------------------------------------------
+        // Movement
+        // -------------------------------------------------------------------------------------------------------
         if(bn::keypad::left_held()){
         //|| (bn::keypad::a_held() && newleftshadowpos.x() > enemtarget.x())) {
             scrollx -= speed;
@@ -123,7 +127,6 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
                 }
             }
         }
-
         if(bn::keypad::up_held()){
         //|| (bn::keypad::a_held() && newrghtshadowpos.y() > enemtarget.y())) {
 
@@ -170,8 +173,9 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
                 }
             }
         }
-
+        // -------------------------------------------------------------------------------------------------------
         // Riichi
+        // -------------------------------------------------------------------------------------------------------
         if(bn::keypad::r_pressed() && !r_attack && !r_return && (rarmx == -16 || rarmx == 32)) {
             r_attack = true;
             if(leftorright) atk_dirx = 1;
@@ -181,7 +185,6 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
             if(direction == 4) atk_diry = -1;
             plyr_r.set_tiles(bn::sprite_items::rarm.tiles_item().create_tiles(1));
         }
-
         if(r_attack && !r_return)
         {
             rarmx += atk_dirx * 4;
@@ -195,46 +198,28 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
                 r_return = true;
             }
         }
-
         if(r_return && !r_attack)
         {
             if(atk_dirx == -1) rarmx -= atk_dirx * 8;
             if(atk_dirx == 1)  rarmx -= atk_dirx * 8;
             if(leftorright && rarmx < 32) rarmx += atk_dirx * 8;
-            if(rarmx <= 32 && rarmx >= -16) r_return = false;
+            if(rarmy < 6) rarmy += 4;
+            if(rarmy > 10) rarmy -= 4;
+            if(rarmx <= 32 && rarmx >= -16 && rarmy >= 6 && rarmy <= 10) r_return = false;
         }
-
-        // if(!r_return && !r_attack)
-        // {
-        //     plyr_r.set_tiles(bn::sprite_items::rarm.tiles_item().create_tiles(0));
-        //     if(atk_dirx == 1) {
-        //     if(!leftorright && rarmx > -16) rarmx -= atk_dirx * 8;
-        //     if(leftorright && rarmx < 32) rarmx += atk_dirx * 8;
-        //     }
-        //     if(atk_dirx == -1) {
-        //     if(!leftorright && rarmx > -16) rarmx += atk_dirx * 8;
-        //     if(leftorright && rarmx < 32) rarmx -= atk_dirx * 8;
-        //     }
-        // }
-
         if(!r_return && !r_attack)
         {
             plyr_r.set_tiles(bn::sprite_items::rarm.tiles_item().create_tiles(0));
             if(!leftorright && rarmx > -16) rarmx -= 8;
             if(leftorright && rarmx < 32) rarmx += 8;
         }
-
-        if(!r_attack && rarmy != 8)
-        {
-            rarmy -= atk_diry * 4;
-        }
-
+        // Heart
         if(!l_return && !l_attack)
         {
             if(!leftorright && larmx < 16) larmx += 8;
             if(leftorright && larmx > -28) larmx -= 8;
         }
-
+        // Walk Cycle
         if(walking)
         {
             if(pa<2) { paa++;}
@@ -248,11 +233,12 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
                 plyr_d.set_tiles(bn::sprite_items::legs.tiles_item().create_tiles(direction));
             }
         }
-
         plyr_l.set_position(larmx + 8, larmy);
         plyr_r.set_position(rarmx - 8, rarmy);
 
+        // -------------------------------------------------------------------------------------------------------
         // Main Tile Collision
+        // -------------------------------------------------------------------------------------------------------
         bn::regular_bg_map_cell plyr_map_cell1 = map_item.cell(newleftshadowpos);
         bn::regular_bg_map_cell plyr_map_cell2 = map_item.cell(newrghtshadowpos);
         int plyr_tile_index1 = bn::regular_bg_map_cell_info(plyr_map_cell1).tile_index();
@@ -274,17 +260,20 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
                 if(plyr_tile_index1 == bn::regular_bg_map_cell_info(valid_map_cells[i]).tile_index()
                 && plyr_tile_index2 == bn::regular_bg_map_cell_info(valid_map_cells[j]).tile_index())
                 {
-                    //camera.set_x(plyr_sprite_x + 4 + 0);
-                    //camera.set_y(plyr_sprite_y + 4 - 24);
                     leftshadowpos = newleftshadowpos;
                     rghtshadowpos = newrghtshadowpos;
                 }
             }
         }
 
-        // ----------------------------------------------------
+        // -------------------------------------------------------------------------------------------------------
+        // Enemies
+        // -------------------------------------------------------------------------------------------------------
+        enm1.set_position(plyr_sprite_x + scrollx + 4 + ex1, plyr_sprite_y + scrolly + 4 + ey1);
+
+        // -------------------------------------------------------------------------------------------------------
 		// Logging
-		// ----------------------------------------------------
+		// -------------------------------------------------------------------------------------------------------
 		if(bn::keypad::select_pressed()) { 
             rarmx = -16;
             rarmy = 0;
@@ -296,9 +285,9 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
             BN_LOG("RATKx: ",  rarmx);
             BN_LOG("RATKy: ",  rarmy);
 		}
-		// ----------------------------------------------------
+		// -------------------------------------------------------------------------------------------------------
 		// Type Text
-		// ----------------------------------------------------
+		// -------------------------------------------------------------------------------------------------------
 		const char c = conversation[sentence].at(letter);
         if(bn::keypad::b_pressed()) {
         	typetext = true;
@@ -319,7 +308,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
         	testing_text += c;
         	text_generator.generate(-110, -70, testing_text, dialog);
         }
-        // ----------------------------------------------------
+        // -------------------------------------------------------------------------------------------------------
 		bn::core::update();
     }
 }

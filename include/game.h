@@ -41,6 +41,9 @@
 #include "bn_regular_bg_items_test_map_3.h"
 // #include "bn_regular_bg_items_bg_loop.h"
 
+// Include
+#include "collision.h"
+
 // Sprites.h"
 #include "bn_sprite_items_bg_loop.h"
 #include "bn_sprite_items_big_heart.h"
@@ -71,5 +74,7 @@ bool leftorright; // left is false, right is true;
 int atk_dirx = 0, atk_diry;
 
 int larmx = 16, larmy = 8, rarmx = -16, rarmy = 8;
+
+int ex1 = 50, ey1 = 50;
 
 #endif
