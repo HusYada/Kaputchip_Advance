@@ -17,4 +17,9 @@ class collision {
   	// if uA and uB are between 0-1, lines are colliding
   	if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) { return true; } 
   	return false; }
+  	public:
+	bool fixlap(bn::fixed x1, bn::fixed y1, bn::fixed w1, bn::fixed h1, bn::fixed x2, bn::fixed y2, bn::fixed w2, bn::fixed h2) {  
+	if (x1 + w1 > x2 && x1 < x2 + w2 && y1 + h1 > y2 && y1 < y2 + h2) { return true; }
+	else { return false; }
+	}
 };

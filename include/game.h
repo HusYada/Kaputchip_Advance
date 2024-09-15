@@ -30,7 +30,7 @@
 #include "load_attributes.h"
 // audio player
 #include "bn_music.h"
-//#include "bn_music_items.h"
+#include "bn_music_items.h"
 #include "bn_format.h"
 #include "bn_config_audio.h"
 #include "bn_sound_actions.h"
@@ -39,10 +39,12 @@
 // Backgrounds
 #include "bn_regular_bg_items_test_map_2.h"
 #include "bn_regular_bg_items_test_map_3.h"
+#include "bn_regular_bg_items_netmap2.h"
 // #include "bn_regular_bg_items_bg_loop.h"
 
 // Include
 #include "collision.h"
+#include "player.h"
 
 // Sprites.h"
 #include "bn_sprite_items_bg_loop.h"
@@ -62,6 +64,7 @@
 
 // Variables
 bn::string<64> testing_text;
+bn::string<32> yummyscore;
 int scene = 0;
 int px, py, speed = 1, bgx, bgy, bgspd, dx, dy;
 int scrollx = 0, scrolly = 0, shrlx = 0, shrly = 0; // SHadow ScRoLl
@@ -75,6 +78,20 @@ int atk_dirx = 0, atk_diry;
 
 int larmx = 16, larmy = 8, rarmx = -16, rarmy = 8;
 
-int ex1 = 50, ey1 = 50;
+// ed = enem ded, es = enemy on screen
+int ex1 = 250, ey1 = -50;
+int ex2 = 450, ey2 = -200;
+int ex3 = 650, ey3 = -100;
+int ex4 = 250, ey4 = -450;
+int ex5 = 50, ey5 = -650;
+bool ed1, es1;
+int ea = 0; int eaa = 0;
+
+bool enembeaten = false;
+
+namespace {
+	collision ocol;
+	player plyr;
+}
 
 #endif
