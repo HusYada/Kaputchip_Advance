@@ -44,7 +44,7 @@
 
 // Include
 #include "collision.h"
-#include "player.h"
+//#include "player.h"
 
 // Sprites.h"
 #include "bn_sprite_items_bg_loop.h"
@@ -91,7 +91,7 @@ bool enembeaten = false;
 
 namespace {
 	collision ocol;
-	player plyr;
+	//player plyr;
 }
 
 #endif

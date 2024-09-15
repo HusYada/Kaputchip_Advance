@@ -44,8 +44,6 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
     bn::sprite_ptr plyr_l = bn::sprite_items::big_heart.create_sprite(16, 8);
     bn::sprite_ptr plyr_d = bn::sprite_items::legs.create_sprite(0, 16);
     bn::sprite_ptr plyr_b = bn::sprite_items::body.create_sprite(0, 0);
-    //bn::sprite_ptr plyr_bub = bn::sprite_items::body.create_sprite(40, 40);
-    //plyr.start();
 
     // Enemies
     bn::sprite_ptr enm1 = bn::sprite_items::e_bug.create_sprite(0, 0);
@@ -74,35 +72,18 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
     // -------------------------------------------------------------------------------------------------------
 	while(true)
     {
-        // scene reset
-        if(bn::keypad::l_held() && bn::keypad::r_held()){
-            ex1 = 250;
-            ex2 = 450;
-            ex3 = 650;
-            ex4 = 250;
-            ex5 = 50;
-            scrollx = 0; scrolly = 0; shrlx = 0; shrly = 0;
-            scr = 5;
-            leftshadowpos.set_x(255);
-            leftshadowpos.set_y(255);
-            rghtshadowpos.set_x(256);
-            rghtshadowpos.set_y(255);
-        }
 
     	bn::point newleftshadowpos = leftshadowpos;
         bn::point newrghtshadowpos = rghtshadowpos;
 
-        if(bn::keypad::b_held())
+        if(bn::keypad::a_held())
         {
             speed = 2;
         }
-        if(bn::keypad::b_released())
+        if(bn::keypad::a_released())
         {
             speed = 1;
         }
-
-        //-4, -5
-        // 4,  5
 
         // -------------------------------------------------------------------------------------------------------
         // Movement
@@ -207,7 +188,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
         // -------------------------------------------------------------------------------------------------------
         // Riichi
         // -------------------------------------------------------------------------------------------------------
-        if(bn::keypad::a_pressed() && !r_attack && !r_return && (rarmx == -16 || rarmx == 32)) {
+        if(bn::keypad::r_pressed() && !r_attack && !r_return && (rarmx == -16 || rarmx == 32)) {
             r_attack = true;
             if(leftorright) atk_dirx = 1;
             if(!leftorright) atk_dirx = -1;

@@ -39,3 +39,4 @@
 *.sav
 *.png
 /[Bb]uild/
+mingw64.exe - Shortcut.lnk

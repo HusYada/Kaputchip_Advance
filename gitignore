@@ -30,6 +30,7 @@
 *.exe
 *.out
 *.app
+*.lnk
 
 # More Stuff to Ignore
 *.ini
