@@ -1,9 +1,26 @@
 // Kaputchip Advance by HusYada
 #include "game.h"
 
-// void title() {
-//     //
-// }
+void title() {
+    bn::bg_palettes::set_transparent_color(bn::color(5,5,15));
+    bn::regular_bg_ptr ba1 = bn::regular_bg_items::a4b1.create_bg(0,0);
+    bn::regular_bg_ptr ba2 = bn::regular_bg_items::a4b2.create_bg(0,0);
+    bn::regular_bg_ptr background_map = bn::regular_bg_items::b4.create_bg(0,0);
+    bn::bg_palette_ptr bruh1 = ba1.palette();
+    bn::bg_palette_ptr bruh2 = ba2.palette();
+    bruh1.set_fade(bn::colors::blue, 0.25);
+    bruh2.set_fade(bn::colors::cyan, 0.15);
+    int x1 = 0; int x2 = 0; int y1 = 0; int y2 = 0;
+    while(true){
+        x1-= 2;
+        x2+= 4;
+        y1+= 2;
+        y2-= 4;
+        ba1.set_position(x1, y1);
+        ba2.set_position(x2, y2);
+        bn::core::update();
+    }
+}
 
 void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator, bn::sprite_text_generator score) {
 	// -------------------------------------------------------------------------------------------------------
@@ -29,7 +46,14 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
     // -------------------------------------------------------------------------------------------------------
     // Sprites & Background Map Stuff
     // -------------------------------------------------------------------------------------------------------
-	bn::regular_bg_ptr background_map = bn::regular_bg_items::netmap2.create_bg(0,0);
+	//bn::regular_bg_ptr background_map = bn::regular_bg_items::netmap2.create_bg(0,0);
+    bn::regular_bg_ptr back = bn::regular_bg_items::a1.create_bg(0,0);
+    bn::regular_bg_ptr background_map = bn::regular_bg_items::b1.create_bg(0,0);
+    // bn::regular_bg_ptr back = bn::regular_bg_items::a3.create_bg(0,0);
+    // bn::regular_bg_ptr background_map = bn::regular_bg_items::b3.create_bg(0,0);
+    bn::bg_palette_ptr bruh2 = background_map.palette();
+    bruh2.set_hue_shift_intensity(1);
+
     bn::sprite_ptr plyr_tile_bound = bn::sprite_items::cursor.create_sprite(0, 0);
     plyr_tile_bound.set_tiles(bn::sprite_items::cursor.tiles_item().create_tiles(1));
 	bn::sprite_ptr plyr_left_shadow = bn::sprite_items::cursor.create_sprite(0, 0);
@@ -41,7 +65,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
     // Player
     bn::sprite_ptr plyr_s = bn::sprite_items::p_shadow.create_sprite(0, 24);
     bn::sprite_ptr plyr_r = bn::sprite_items::rarm.create_sprite(-16, 8);
-    bn::sprite_ptr plyr_l = bn::sprite_items::big_heart.create_sprite(16, 8);
+    bn::sprite_ptr plyr_l = bn::sprite_items::rarm.create_sprite(16, 8);
     bn::sprite_ptr plyr_d = bn::sprite_items::legs.create_sprite(0, 16);
     bn::sprite_ptr plyr_b = bn::sprite_items::body.create_sprite(0, 0);
 
@@ -52,13 +76,46 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
     bn::sprite_ptr enm4 = bn::sprite_items::e_jng.create_sprite(0, 0);
     bn::sprite_ptr enm5 = bn::sprite_items::e_blu.create_sprite(0, 0);
 
-	const bn::regular_bg_map_item& map_item = bn::regular_bg_items::netmap2.map_item();
-    bn::regular_bg_map_cell valid_map_cells[12] = {
-    map_item.cell(0, 0), map_item.cell(0, 1), map_item.cell(0, 2),
-    map_item.cell(1, 0), map_item.cell(1, 1), map_item.cell(1, 2),
-    map_item.cell(2, 0), map_item.cell(2, 1), map_item.cell(2, 2),
-    map_item.cell(3, 0), map_item.cell(3, 1), map_item.cell(3, 2),
+    // NET MAP 2
+	// const bn::regular_bg_map_item& map_item = bn::regular_bg_items::netmap2.map_item();
+ //    bn::regular_bg_map_cell valid_map_cells[12] = {
+ //    map_item.cell(0, 0), map_item.cell(0, 1), map_item.cell(0, 2),
+ //    map_item.cell(1, 0), map_item.cell(1, 1), map_item.cell(1, 2),
+ //    map_item.cell(2, 0), map_item.cell(2, 1), map_item.cell(2, 2),
+ //    map_item.cell(3, 0), map_item.cell(3, 1), map_item.cell(3, 2),
+ //    };
+    // B1
+    const bn::regular_bg_map_item& map_item = bn::regular_bg_items::b1.map_item();
+    bn::regular_bg_map_cell valid_map_cells[46] = {
+    map_item.cell(0, 0), map_item.cell(1, 0), map_item.cell(2, 0),map_item.cell(3, 0), map_item.cell(4, 0),
+    map_item.cell(5, 0), map_item.cell(6, 0), map_item.cell(7, 0),map_item.cell(8, 0), map_item.cell(9, 0),
+    map_item.cell(10, 0), map_item.cell(11, 0), map_item.cell(12, 0),map_item.cell(13, 0), map_item.cell(14, 0),
+    map_item.cell(15, 0), map_item.cell(16, 0), map_item.cell(17, 0),map_item.cell(18, 0), map_item.cell(19, 0),
+    map_item.cell(20, 0), map_item.cell(21, 0), map_item.cell(22, 0),map_item.cell(23, 0), map_item.cell(24, 0),
+    map_item.cell(25, 0), map_item.cell(26, 0), map_item.cell(27, 0),map_item.cell(28, 0), map_item.cell(29, 0),
+    map_item.cell(30, 0), map_item.cell(31, 0), map_item.cell(32, 0),map_item.cell(33, 0), map_item.cell(34, 0),
+    map_item.cell(35, 0), map_item.cell(36, 0), map_item.cell(37, 0),map_item.cell(38, 0), map_item.cell(39, 0),
+    map_item.cell(40, 0), map_item.cell(41, 0), map_item.cell(42, 0),map_item.cell(43, 0), map_item.cell(44, 0),
+    map_item.cell(45, 0),
     };
+    // B3
+    // const bn::regular_bg_map_item& map_item = bn::regular_bg_items::b3.map_item();
+    // bn::regular_bg_map_cell valid_map_cells[63] = {
+    // map_item.cell(0, 0), map_item.cell(1, 0), map_item.cell(2, 0),map_item.cell(3, 0), map_item.cell(4, 0),
+    // map_item.cell(5, 0), map_item.cell(6, 0), map_item.cell(7, 0),map_item.cell(8, 0), map_item.cell(9, 0),
+    // map_item.cell(10, 0), map_item.cell(11, 0), map_item.cell(12, 0),map_item.cell(13, 0), map_item.cell(14, 0),
+    // map_item.cell(15, 0), map_item.cell(16, 0), map_item.cell(17, 0),map_item.cell(18, 0), map_item.cell(19, 0),
+    // map_item.cell(20, 0), map_item.cell(21, 0), map_item.cell(22, 0),map_item.cell(23, 0), map_item.cell(24, 0),
+    // map_item.cell(25, 0), map_item.cell(26, 0), map_item.cell(27, 0),map_item.cell(28, 0), map_item.cell(29, 0),
+    // map_item.cell(30, 0), map_item.cell(31, 0), map_item.cell(32, 0),map_item.cell(33, 0), map_item.cell(34, 0),
+    // map_item.cell(35, 0), map_item.cell(36, 0), map_item.cell(37, 0),map_item.cell(38, 0), map_item.cell(39, 0),
+    // map_item.cell(40, 0), map_item.cell(41, 0), map_item.cell(42, 0),map_item.cell(43, 0), map_item.cell(44, 0),
+    // map_item.cell(45, 0), map_item.cell(46, 0), map_item.cell(47, 0),map_item.cell(48, 0), map_item.cell(49, 0),
+    // map_item.cell(50, 0), map_item.cell(51, 0), map_item.cell(52, 0),map_item.cell(53, 0), map_item.cell(54, 0),
+    // map_item.cell(55, 0), map_item.cell(56, 0), map_item.cell(57, 0),map_item.cell(58, 0), map_item.cell(59, 0),
+    // map_item.cell(60, 0), map_item.cell(61, 0), map_item.cell(62, 0),
+    // };
+    // Get all valid map tiles init
     int valid_map_cells_length = sizeof(valid_map_cells)/sizeof(bn::regular_bg_map_cell);
 
     bn::point leftshadowpos(255, 255);
@@ -69,9 +126,24 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
 
     bn::point enemtarget(259, 255);
 
+    int backy = 0;
+
     // -------------------------------------------------------------------------------------------------------
 	while(true)
     {
+        // A3 BACK MOVE
+        backy+=1;
+        back.set_position(0,backy);
+        bn::fixed hue_shift_intensity = bruh2.hue_shift_intensity();
+
+            if(bn::keypad::left_held())
+            {
+                bruh2.set_hue_shift_intensity(bn::max(hue_shift_intensity - 0.01, bn::fixed(0.8)));
+            }
+            if(bn::keypad::right_held())
+            {
+                bruh2.set_hue_shift_intensity(bn::min(hue_shift_intensity + 0.01, bn::fixed(1)));
+            }
 
     	bn::point newleftshadowpos = leftshadowpos;
         bn::point newrghtshadowpos = rghtshadowpos;
@@ -354,7 +426,7 @@ void test_scene(bn::camera_ptr& camera, bn::sprite_text_generator text_generator
 		    // BN_LOG("Back Y: ",  sizeof(bn::regular_bg_map_cell));
 		    // BN_LOG("plyr_sprite_x: ",  plyr_sprite_x);
 		    // BN_LOG("plyr_sprite_y: ",  plyr_sprite_y);
-            BN_LOG("RATKx: ",  rarmx);
+            //BN_LOG("RATKx: ",  hue_shift_intensity);
             BN_LOG("RATKy: ",  rarmy);
 		}
 		// -------------------------------------------------------------------------------------------------------
@@ -399,9 +471,10 @@ int main() {
     bn::sprite_text_generator big_variable_text_generator(common::variable_8x16_sprite_font);
     bn::sprite_text_generator scoretext(common::variable_8x16_sprite_font);
     bn::camera_ptr camera = bn::camera_ptr::create(0, 0);
-    bn::bg_palettes::set_transparent_color(bn::color(5,5,5));
+    //bn::bg_palettes::set_transparent_color(bn::color(5,5,5));
     bn::music_items::beach.play(0.5);
     while(true) {
+        //title();
         test_scene(camera, big_variable_text_generator, scoretext);
     }
     bn::core::update();

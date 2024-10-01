@@ -4,9 +4,11 @@
 
 // All Includes (dunno if i need all this)
 #include "bn_bg_palettes.h"
+#include "bn_bg_palette_actions.h"
 #include "bn_blending.h"
 #include "bn_camera_actions.h"
 #include "bn_color.h"
+#include "bn_colors.h"
 #include "bn_core.h"
 #include "bn_display.h"
 #include "bn_fixed_point.h"
@@ -41,6 +43,16 @@
 #include "bn_regular_bg_items_test_map_3.h"
 #include "bn_regular_bg_items_netmap2.h"
 // #include "bn_regular_bg_items_bg_loop.h"
+#include "bn_regular_bg_items_a1.h"
+#include "bn_regular_bg_items_a2.h"
+#include "bn_regular_bg_items_a3.h"
+#include "bn_regular_bg_items_a4a.h"
+#include "bn_regular_bg_items_a4b1.h"
+#include "bn_regular_bg_items_a4b2.h"
+#include "bn_regular_bg_items_b1.h"
+#include "bn_regular_bg_items_b2.h"
+#include "bn_regular_bg_items_b3.h"
+#include "bn_regular_bg_items_b4.h"
 
 // Include
 #include "collision.h"
